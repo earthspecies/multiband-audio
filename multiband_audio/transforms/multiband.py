@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import torch
-import torchaudio
 from torch import nn
 
 from multiband_audio._configs import BandGridConfig, HeterodyneCfg, SpectrogramCfg, make_band_grid
@@ -124,9 +123,7 @@ class MultibandTransform(nn.Module):
                 n_mels=n_mels,
             )
         )
-        self.heterodyne = HeterodyneToBaseband(
-            HeterodyneCfg(baseband_sr=target_sr, lowpass_factor=lowpass_factor)
-        )
+        self.heterodyne = HeterodyneToBaseband(HeterodyneCfg(baseband_sr=target_sr, lowpass_factor=lowpass_factor))
 
         self.grid_cfg = BandGridConfig(
             sample_rate=sample_rate,
@@ -168,6 +165,11 @@ class MultibandTransform(nn.Module):
             * ``padding_mask=None, return_scores=True``: ``(bands, scores)``
             * ``padding_mask given, return_scores=False``: ``(bands, band_mask)``
             * ``padding_mask given, return_scores=True``: ``(bands, scores, band_mask)``
+
+        Raises
+        ------
+        ValueError
+            If the band output contains NaN or Inf values.
         """
         if x.ndim == 2:
             x = x.unsqueeze(1)
@@ -191,11 +193,16 @@ class MultibandTransform(nn.Module):
         if padding_mask is not None:
             T_out = all_bands.shape[-1]
             import torch.nn.functional as F
-            band_mask = F.interpolate(
-                padding_mask.float().unsqueeze(1),
-                size=T_out,
-                mode="nearest",
-            ).squeeze(1).bool()
+
+            band_mask = (
+                F.interpolate(
+                    padding_mask.float().unsqueeze(1),
+                    size=T_out,
+                    mode="nearest",
+                )
+                .squeeze(1)
+                .bool()
+            )
 
         if not self.return_scores:
             return (all_bands, band_mask) if band_mask is not None else all_bands
@@ -207,7 +214,13 @@ class MultibandTransform(nn.Module):
         return all_bands, scores.to_tensor()
 
     def _compute_scores(self, spec: torch.Tensor) -> BandScores:
-        """Compute entropy and flux scores for each band."""
+        """Compute entropy and flux scores for each band.
+
+        Returns
+        -------
+        BandScores
+            Container with entropy and/or flux scores.
+        """
         scores = BandScores()
         if spec.ndim == 4:
             spec = spec.mean(dim=1)
@@ -222,7 +235,13 @@ class MultibandTransform(nn.Module):
         return scores
 
     def _compute_entropy(self, power: torch.Tensor) -> torch.Tensor:
-        """Compute spectral entropy for each band."""
+        """Compute spectral entropy for each band.
+
+        Returns
+        -------
+        torch.Tensor
+            ``(N, num_bands)`` entropy values.
+        """
         if power.ndim == 4:
             power = power.mean(dim=1)
         N, F, T = power.shape
@@ -247,7 +266,13 @@ class MultibandTransform(nn.Module):
         return torch.stack(entropies, dim=1)
 
     def _compute_flux(self, power: torch.Tensor) -> torch.Tensor:
-        """Compute spectral flux for each band."""
+        """Compute spectral flux for each band.
+
+        Returns
+        -------
+        torch.Tensor
+            ``(N, num_bands)`` flux values.
+        """
         if power.ndim == 4:
             power = power.mean(dim=1)
         N, F, T = power.shape
@@ -332,9 +357,7 @@ class MultibandTransformDynamic(nn.Module):
         score_types: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
-        self.heterodyne = HeterodyneToBaseband(
-            HeterodyneCfg(baseband_sr=target_sr, lowpass_factor=lowpass_factor)
-        )
+        self.heterodyne = HeterodyneToBaseband(HeterodyneCfg(baseband_sr=target_sr, lowpass_factor=lowpass_factor))
         self.band_width = band_width
         self.step = step
         self.return_scores = return_scores
@@ -342,11 +365,15 @@ class MultibandTransformDynamic(nn.Module):
         self._spec_cache: dict[int, Spectrogram] = {}
 
     def _get_spec(self, sample_rate: int) -> Spectrogram:
-        """Get or create spectrogram extractor for a given sample rate."""
+        """Get or create spectrogram extractor for a given sample rate.
+
+        Returns
+        -------
+        Spectrogram
+            Cached or newly created spectrogram module.
+        """
         if sample_rate not in self._spec_cache:
-            self._spec_cache[sample_rate] = Spectrogram(
-                SpectrogramCfg(sample_rate=sample_rate)
-            )
+            self._spec_cache[sample_rate] = Spectrogram(SpectrogramCfg(sample_rate=sample_rate))
         return self._spec_cache[sample_rate]
 
     def _compute_bands(self, sample_rate: int) -> List[Tuple[float, float]]:
@@ -429,11 +456,16 @@ class MultibandTransformDynamic(nn.Module):
         if padding_mask is not None:
             T_out = all_bands.shape[-1]
             import torch.nn.functional as F
-            band_mask = F.interpolate(
-                padding_mask.float().unsqueeze(1),
-                size=T_out,
-                mode="nearest",
-            ).squeeze(1).bool()
+
+            band_mask = (
+                F.interpolate(
+                    padding_mask.float().unsqueeze(1),
+                    size=T_out,
+                    mode="nearest",
+                )
+                .squeeze(1)
+                .bool()
+            )
             return all_bands, band_mask, scores, valid_bands
 
         return all_bands, scores, valid_bands

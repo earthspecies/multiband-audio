@@ -17,11 +17,11 @@ Examples
 from multiband_audio._version import __version__
 from multiband_audio.data import collate_fn
 from multiband_audio.fusion import (
+    FUSION_REGISTRY,
     BaseFusion,
     BilinearPoolingFusion,
     ConcatLinearFusion,
     CrossAttentionFusion,
-    FUSION_REGISTRY,
     GatedPoolFusion,
     HybridFusion,
     MaxPoolFusion,
@@ -41,8 +41,8 @@ from multiband_audio.transforms import (
     MultibandSelectiveTransform,
     MultibandTransform,
     MultibandTransformDynamic,
-    SpectrogramCfg,
     Spectrogram,
+    SpectrogramCfg,
     make_band_grid,
 )
 

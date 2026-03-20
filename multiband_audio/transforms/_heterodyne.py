@@ -105,6 +105,11 @@ class HeterodyneToBaseband(nn.Module):
         -------
         Tuple[torch.Tensor, int]
             Baseband waveform ``(B, 1, T')`` and output sample rate.
+
+        Raises
+        ------
+        ValueError
+            If bandwidth (``f_high - f_low``) is not positive.
         """
         if x.ndim == 2:
             x = x.unsqueeze(1)

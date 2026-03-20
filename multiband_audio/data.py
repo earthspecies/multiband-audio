@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Tuple, Union
+from typing import List, Tuple, Union
 
 import torch
 
@@ -50,7 +50,7 @@ def collate_fn(
     >>> mask[1, 8000:].all()   # second sample is padded after 8000
     tensor(True)
     """
-    waveforms, labels = zip(*batch)
+    waveforms, labels = zip(*batch, strict=False)
 
     # Normalise to (T,) — strip leading channel dim if present
     waveforms = [w.squeeze(0) if w.ndim == 2 else w for w in waveforms]

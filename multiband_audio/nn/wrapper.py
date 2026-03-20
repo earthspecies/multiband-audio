@@ -100,7 +100,13 @@ class MultibandWrapper(nn.Module):
                 p.requires_grad = False
 
     def train(self, mode: bool = True) -> "MultibandWrapper":
-        """Override to keep frozen backbone in eval mode."""
+        """Override to keep frozen backbone in eval mode.
+
+        Returns
+        -------
+        MultibandWrapper
+            Self, for chaining.
+        """
         super().train(mode)
         if self.freeze_backbone:
             self.backbone.eval()
@@ -184,9 +190,16 @@ class MultibandWrapper(nn.Module):
         return fused
 
     def _backbone_forward(self, x: torch.Tensor, padding_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
-        """Forward through backbone with optional gradient checkpointing and masking."""
+        """Forward through backbone with optional gradient checkpointing and masking.
+
+        Returns
+        -------
+        torch.Tensor
+            ``(N, D)`` embeddings from the backbone.
+        """
+
         def _call(x: torch.Tensor) -> torch.Tensor:
-            if padding_mask is not None and hasattr(self.backbone, "__call__"):
+            if padding_mask is not None and callable(self.backbone):
                 try:
                     return self.backbone(x, padding_mask=padding_mask)
                 except TypeError:

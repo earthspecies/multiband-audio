@@ -8,8 +8,8 @@ import torch
 import torchaudio
 from torch import nn
 
-from multiband_audio.selectors.base import BaseBandSelector
 from multiband_audio._configs import HeterodyneCfg, SpectrogramCfg
+from multiband_audio.selectors.base import BaseBandSelector
 from multiband_audio.transforms._heterodyne import HeterodyneToBaseband
 from multiband_audio.transforms._spectrogram import Spectrogram
 
@@ -79,9 +79,7 @@ class MultibandSelectiveTransform(nn.Module):
                 n_mels=n_mels,
             )
         )
-        self.heterodyne = HeterodyneToBaseband(
-            HeterodyneCfg(baseband_sr=target_sr, lowpass_factor=lowpass_factor)
-        )
+        self.heterodyne = HeterodyneToBaseband(HeterodyneCfg(baseband_sr=target_sr, lowpass_factor=lowpass_factor))
         self.band_selector = band_selector
         self.max_bands = max(1, int(max_bands))
         self.return_band_info = return_band_info
@@ -111,6 +109,11 @@ class MultibandSelectiveTransform(nn.Module):
             * ``padding_mask=None, return_band_info=True``: ``(bands, band_info)``
             * ``padding_mask given, return_band_info=False``: ``(bands, band_mask)``
             * ``padding_mask given, return_band_info=True``: ``(bands, band_mask, band_info)``
+
+        Raises
+        ------
+        ValueError
+            If the band output contains NaN or Inf values.
         """
         spec = self.spec(x)
         sr_in = self.spec.cfg.sample_rate
@@ -139,19 +142,23 @@ class MultibandSelectiveTransform(nn.Module):
             x_min = torch.nanmin(x_out).item()
             x_max = torch.nanmax(x_out).item()
             raise ValueError(
-                f"NaN/Inf in multiband output (nan={nan_count}, inf={inf_count}, "
-                f"min={x_min}, max={x_max})"
+                f"NaN/Inf in multiband output (nan={nan_count}, inf={inf_count}, min={x_min}, max={x_max})"
             )
 
         band_mask: Optional[torch.Tensor] = None
         if padding_mask is not None:
             T_out = x_out.shape[-1]
             import torch.nn.functional as F
-            band_mask = F.interpolate(
-                padding_mask.float().unsqueeze(1),
-                size=T_out,
-                mode="nearest",
-            ).squeeze(1).bool()
+
+            band_mask = (
+                F.interpolate(
+                    padding_mask.float().unsqueeze(1),
+                    size=T_out,
+                    mode="nearest",
+                )
+                .squeeze(1)
+                .bool()
+            )
 
         if band_mask is not None:
             return (x_out, band_mask, bands) if self.return_band_info else (x_out, band_mask)

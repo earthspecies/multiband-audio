@@ -95,7 +95,7 @@ logits = head(fusion(embeddings)) # (8, 10)
 
 ### 4. Variable-length batches and padding masks
 
-This toolkit also contains a [`collate_fn`](src/multiband_audio/data.py) which can be used for padding masks.
+This toolkit also contains a [`collate_fn`](multiband_audio/data.py) which can be used for padding masks.
 
 ```python
 from torch.utils.data import DataLoader

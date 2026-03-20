@@ -115,9 +115,7 @@ class SelfAttentionFusion(BaseFusion):
         # Band weights: scaled dot-product between CLS and band outputs
         with torch.no_grad():
             band_out = out[:, 1:]  # (N, B, D)
-            sim = torch.bmm(
-                cls_out.unsqueeze(1), band_out.transpose(1, 2)
-            ).squeeze(1) / (D**0.5)  # (N, B)
+            sim = torch.bmm(cls_out.unsqueeze(1), band_out.transpose(1, 2)).squeeze(1) / (D**0.5)  # (N, B)
             weights = F.softmax(sim, dim=-1)
             self._last_weights = weights.mean(dim=0)  # (B,)
 

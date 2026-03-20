@@ -14,10 +14,10 @@ from multiband_audio.fusion.pooling import MaxPoolFusion, MeanPoolFusion
 
 FUSION_REGISTRY: dict[str, type[BaseFusion]] = {
     # Paper names (primary keys)
-    "mp": MeanPoolFusion,       # Mean-Pool
-    "gp": GatedPoolFusion,      # Gated-Pool
-    "moe": MoEFusion,           # Mixture-of-Experts
-    "hyb": HybridFusion,        # Hybrid
+    "mp": MeanPoolFusion,  # Mean-Pool
+    "gp": GatedPoolFusion,  # Gated-Pool
+    "moe": MoEFusion,  # Mixture-of-Experts
+    "hyb": HybridFusion,  # Hybrid
     "sa": SelfAttentionFusion,  # Self-Attention
     # Additional (not in paper)
     "max_pool": MaxPoolFusion,

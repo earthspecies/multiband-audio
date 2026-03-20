@@ -85,12 +85,7 @@ class GMMBandSelector(BaseBandSelector):
         power = spec[0].exp()  # (F, T) - use first example
         mean_spec = power.mean(dim=-1)  # (F,)
 
-        freqs = (
-            torch.linspace(0, self.grid_cfg.sample_rate / 2, F, device=spec.device)
-            .cpu()
-            .numpy()
-            .reshape(-1, 1)
-        )
+        freqs = torch.linspace(0, self.grid_cfg.sample_rate / 2, F, device=spec.device).cpu().numpy().reshape(-1, 1)
         weights = (mean_spec / (mean_spec.sum() + 1e-12)).cpu().numpy()
 
         gmm = GaussianMixture(

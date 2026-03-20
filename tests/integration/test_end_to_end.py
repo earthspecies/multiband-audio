@@ -16,7 +16,7 @@ from multiband_audio.selectors import EntropyBandSelector
 
 
 class ToyBackbone(nn.Module):
-    def __init__(self, embed_dim: int = 256):
+    def __init__(self, embed_dim: int = 256) -> None:
         super().__init__()
         self.pool = nn.AdaptiveAvgPool1d(embed_dim)
 
@@ -29,7 +29,7 @@ class ToyBackbone(nn.Module):
 
 
 class TestEndToEnd:
-    def test_transform_to_wrapper(self):
+    def test_transform_to_wrapper(self) -> None:
         """Full pipeline: transform -> wrapper -> logits."""
         transform = MultibandTransform(sample_rate=48000, target_sr=16000)
         backbone = ToyBackbone(embed_dim=256)
@@ -47,7 +47,7 @@ class TestEndToEnd:
 
         assert logits.shape == (2, 10)
 
-    def test_transform_with_scores_to_hybrid_wrapper(self):
+    def test_transform_with_scores_to_hybrid_wrapper(self) -> None:
         """Pipeline with handcrafted scores for hybrid fusion."""
         transform = MultibandTransform(
             sample_rate=48000,
@@ -68,7 +68,7 @@ class TestEndToEnd:
         out = wrapper((bands, scores))
         assert out.shape == (2, 256)
 
-    def test_selective_transform_pipeline(self):
+    def test_selective_transform_pipeline(self) -> None:
         """Selective transform -> wrapper pipeline."""
         selector = EntropyBandSelector(sample_rate=48000, max_freq_hz=24000)
         transform = MultibandSelectiveTransform(
@@ -92,7 +92,7 @@ class TestEndToEnd:
 
         assert logits.shape == (2, 10)
 
-    def test_build_fusion_factory(self):
+    def test_build_fusion_factory(self) -> None:
         """Verify all registered fusions can be instantiated."""
         from multiband_audio.fusion.registry import FUSION_REGISTRY
 

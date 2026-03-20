@@ -11,19 +11,37 @@ from torch import nn
 
 @pytest.fixture
 def test_data_dir() -> Path:
-    """Path to the test data directory."""
+    """Path to the test data directory.
+
+    Returns
+    -------
+    Path
+        Absolute path to ``tests/data/``.
+    """
     return Path(__file__).parent / "data"
 
 
 @pytest.fixture
 def test_chirp_path(test_data_dir: Path) -> Path:
-    """Path to the test chirp wav file."""
+    """Path to the test chirp wav file.
+
+    Returns
+    -------
+    Path
+        Absolute path to ``tests/data/test_chirp.wav``.
+    """
     return test_data_dir / "test_chirp.wav"
 
 
 @pytest.fixture
 def dummy_backbone() -> nn.Module:
-    """A simple linear backbone for testing: (N, T) -> (N, 256)."""
+    """A simple linear backbone for testing: (N, T) -> (N, 256).
+
+    Returns
+    -------
+    nn.Module
+        Sequential module with adaptive average pooling.
+    """
     return nn.Sequential(
         nn.AdaptiveAvgPool1d(1),
     )
@@ -46,5 +64,11 @@ class ToyBackbone(nn.Module):
 
 @pytest.fixture
 def toy_backbone() -> ToyBackbone:
-    """Toy backbone that maps arbitrary waveform to (N, 256)."""
+    """Toy backbone that maps arbitrary waveform to (N, 256).
+
+    Returns
+    -------
+    ToyBackbone
+        Backbone with embed_dim=256.
+    """
     return ToyBackbone(embed_dim=256)

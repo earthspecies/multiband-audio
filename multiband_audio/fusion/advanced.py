@@ -178,7 +178,12 @@ class BilinearPoolingFusion(BaseFusion):
             bilinear = (u * v).mean(dim=1)
         else:
             # Single band: no adjacent pairs, fall back to zero second-order term
-            bilinear = torch.zeros(embeddings.shape[0], self.U.out_features, device=embeddings.device, dtype=embeddings.dtype)
+            bilinear = torch.zeros(
+                embeddings.shape[0],
+                self.U.out_features,
+                device=embeddings.device,
+                dtype=embeddings.dtype,
+            )
 
         second_order = self.proj(bilinear)
         return first_order + second_order

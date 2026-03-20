@@ -12,7 +12,7 @@ __all__ = [
 
 # GMMBandSelector requires scikit-learn (optional dependency)
 try:
-    from multiband_audio.selectors.gmm import GMMBandSelector
+    from multiband_audio.selectors.gmm import GMMBandSelector  # noqa: F401
 
     __all__.append("GMMBandSelector")
 except ImportError:
