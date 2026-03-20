@@ -1,0 +1,85 @@
+[project]
+name = "multiband-audio"
+version = "0.1.0"
+description = "Multiband audio transforms and fusion for PyTorch. Split audio into frequency bands via heterodyning, score bands, and fuse representations."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "Eklavya Sarkar", email = "eklavya@earthspecies.org" },
+]
+keywords = ["audio", "multiband", "bioacoustics", "pytorch", "signal-processing", "heterodyne"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    "torch>=2.0",
+    "torchaudio>=2.0",
+    "numpy",
+    "librosa",
+]
+
+[project.optional-dependencies]
+gmm = ["scikit-learn>=1.0"]
+
+[dependency-groups]
+dev = [
+    "pre-commit<=4.2.0",
+    "pytest<=7.4.0",
+    "ruff<=0.11.2",
+    "deptry<=0.23.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/earthspecies/multiband-audio"
+Repository = "https://github.com/earthspecies/multiband-audio"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/multiband_audio"]
+
+[tool.pytest.ini_options]
+python_files = [
+    "test_*.py",
+    "check_*.py",
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+extend-select = ["DOC", "B9", "B", "E", "W", "ANN"]
+fixable = ["ALL"]
+unfixable = []
+preview = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.codespell]
+skip = "*.csv,*.wav"
+
+[tool.deptry]
+exclude = ["conftest.py", ".venv", "tests"]
+
+[tool.deptry.per_rule_ignores]
+DEP002 = ["scikit-learn"]
