@@ -6,7 +6,7 @@ Animals hear and vocalize across frequency ranges that differ substantially from
 
 <img src="img/bands.jpg" alt="header" width="1000"/>
 
-Typical approaches either discard this high-frequency content entirely (*baseband*) or slow down the recording to lower the high-frequency information (*time-expansion*), which expands the signal and reduces spectral resolution. 
+Typical approaches either discard this high-frequency content entirely (*baseband*) or slow down the recording to lower the high-frequency information (*time-expansion*), which expands the signal and reduces spectral resolution.
 
 This toolkit provides a third option: **adaptive multi-band encoding**, allowing pre-trained audio models to access the full-spectrum of bioacoustic recordings through heterodyning and learned **fusion** strategy.
 
@@ -14,7 +14,7 @@ This toolkit provides a third option: **adaptive multi-band encoding**, allowing
 
 <img src="img/pipeline.jpg" alt="header" width="1000"/>
 
-Given a recording at any sample rate, the input signal is split into *B* non-overlapping frequency bands (e.g. of 8 kHz each). Each non-baseband band is then heterodyned (mixed) down to the 0–8 kHz baseband, making it compatible with any standard pre-trained audio model. 
+Given a recording at any sample rate, the input signal is split into *B* non-overlapping frequency bands (e.g. of 8 kHz each). Each non-baseband band is then heterodyned (mixed) down to the 0–8 kHz baseband, making it compatible with any standard pre-trained audio model.
 
 Applying this to each band produces *B* baseband waveforms, each representing a distinct portion of the original spectrum. We resample them to match the SR expected by the pre-trained model, and then pass them individually through the frozen encoder to obtain one embedding per band. Finally, a learned fusion module combines them into a single representation for classification.
 
@@ -160,7 +160,7 @@ This repository contains the source code used for the paper *Beyond the Baseband
           title = {Beyond the Baseband: Adaptive Multi-Band Encoding for Full-Spectrum Bioacoustics Classification},
       booktitle = {},
            year = {2026},
-} 
+}
 ```-->
 
 ## Contact
