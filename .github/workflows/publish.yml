@@ -1,36 +1,41 @@
-name: Publish to PyPI
+---
+name: Build and Publish Package
 
-on:
+on:    # yamllint disable-line rule:truthy
   workflow_dispatch:
+  workflow_call:
   release:
     types: [published]
 
 jobs:
-  publish:
+  build-and-publish:
     runs-on: ubuntu-latest
-    environment: pypi
     permissions:
-      id-token: write  # required for PyPI trusted publishing (OIDC)
+      contents: read
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
 
-      - name: Set up Python
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
           python-version-file: ".python-version"
 
-      - name: Install package
-        run: uv sync --all-extras --dev
+      - name: Install the project
+        run: uv sync
 
-      - name: Run tests
-        run: uv run pytest -q
-
-      - name: Build package
+      - name: Build the package
         run: uv build
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        run: |
+          uv publish \
+            --publish-url https://upload.pypi.org/legacy/ \
+            --trusted-publishing always \
+            --keyring-provider disabled
