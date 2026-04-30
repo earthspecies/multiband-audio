@@ -6,7 +6,7 @@ import torch
 import torchaudio
 from torch import nn
 
-from multiband_audio._configs import SpectrogramCfg
+from multiband_audio.configs import SpectrogramCfg
 
 
 class Spectrogram(nn.Module):

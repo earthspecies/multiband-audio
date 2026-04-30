@@ -14,7 +14,6 @@ Examples
 3
 """
 
-from multiband_audio._version import __version__
 from multiband_audio.data import collate_fn
 from multiband_audio.fusion import (
     FUSION_REGISTRY,
@@ -31,7 +30,7 @@ from multiband_audio.fusion import (
     TopKMoEFusion,
     build_fusion,
 )
-from multiband_audio.nn import LinearHead, MultibandWrapper
+from multiband_audio.nn import LinearHead, MultibandWrapper, SpectrogramBackbone
 from multiband_audio.selectors import BaseBandSelector, EntropyBandSelector, FluxBandSelector
 from multiband_audio.transforms import (
     BandGridConfig,
@@ -45,6 +44,7 @@ from multiband_audio.transforms import (
     SpectrogramCfg,
     make_band_grid,
 )
+from multiband_audio.version import __version__
 
 __all__ = [
     # Version
@@ -83,4 +83,5 @@ __all__ = [
     # NN
     "LinearHead",
     "MultibandWrapper",
+    "SpectrogramBackbone",
 ]

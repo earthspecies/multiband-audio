@@ -7,7 +7,7 @@ from typing import List, Tuple
 import torch
 from torch import nn
 
-from multiband_audio._configs import BandGridConfig, make_band_grid
+from multiband_audio.configs import BandGridConfig, make_band_grid
 
 
 class BaseBandSelector(nn.Module):

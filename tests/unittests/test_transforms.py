@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import torch
 
-from multiband_audio._configs import BandGridConfig, HeterodyneCfg, SpectrogramCfg, make_band_grid
-from multiband_audio.transforms._heterodyne import HeterodyneToBaseband
-from multiband_audio.transforms._spectrogram import Spectrogram
+from multiband_audio.configs import BandGridConfig, HeterodyneCfg, SpectrogramCfg, make_band_grid
+from multiband_audio.transforms.heterodyne import HeterodyneToBaseband
 from multiband_audio.transforms.multiband import MultibandTransform, MultibandTransformDynamic
+from multiband_audio.transforms.spectrogram import Spectrogram
 
 
 class TestBandGridConfig:

@@ -8,10 +8,10 @@ import torch
 import torchaudio
 from torch import nn
 
-from multiband_audio._configs import HeterodyneCfg, SpectrogramCfg
+from multiband_audio.configs import HeterodyneCfg, SpectrogramCfg
 from multiband_audio.selectors.base import BaseBandSelector
-from multiband_audio.transforms._heterodyne import HeterodyneToBaseband
-from multiband_audio.transforms._spectrogram import Spectrogram
+from multiband_audio.transforms.heterodyne import HeterodyneToBaseband
+from multiband_audio.transforms.spectrogram import Spectrogram
 
 
 class MultibandSelectiveTransform(nn.Module):

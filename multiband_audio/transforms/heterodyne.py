@@ -9,7 +9,7 @@ import torch
 import torchaudio
 from torch import nn
 
-from multiband_audio._configs import HeterodyneCfg
+from multiband_audio.configs import HeterodyneCfg
 
 
 def resample_audio(

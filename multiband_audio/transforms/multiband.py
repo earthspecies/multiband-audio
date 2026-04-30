@@ -8,9 +8,9 @@ from typing import List, Optional, Tuple
 import torch
 from torch import nn
 
-from multiband_audio._configs import BandGridConfig, HeterodyneCfg, SpectrogramCfg, make_band_grid
-from multiband_audio.transforms._heterodyne import HeterodyneToBaseband
-from multiband_audio.transforms._spectrogram import Spectrogram
+from multiband_audio.configs import BandGridConfig, HeterodyneCfg, SpectrogramCfg, make_band_grid
+from multiband_audio.transforms.heterodyne import HeterodyneToBaseband
+from multiband_audio.transforms.spectrogram import Spectrogram
 
 
 @dataclass
