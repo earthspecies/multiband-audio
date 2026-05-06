@@ -1,6 +1,6 @@
 # multiband-audio
 
-[![arXiv](https://img.shields.io/badge/arXiv--b31b1b.svg)](https://arxiv.org/abs/)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.27936-b31b1b.svg)](https://arxiv.org/abs/2604.27936)
 
 Animals hear and vocalize across frequency ranges that differ substantially from humans, often extending into the ultrasonic domain. Yet most computational bioacoustics systems currently rely on standard audio models pre-trained at 16 kHz, corresponding to the human audible range. Typical approaches either resample a given input to the 0-8 kHz baseband and discard this high-frequency content entirely (*baseband*), or slow down the recording to lower the high-frequency information (*time-expansion*), which expands the signal and reduces spectral resolution.
 
