@@ -22,10 +22,12 @@ dependencies = [
     "numpy",
     "librosa",
     "resampy",
+    "matplotlib>=3.10.9",
 ]
 
 [project.optional-dependencies]
 gmm = ["scikit-learn>=1.0"]
+backbones = ["torchvision>=0.15"]
 
 [dependency-groups]
 dev = [

@@ -11,14 +11,16 @@ repos:
         types: [python]
         args: [--fix=no]
       - id: check-added-large-files
-        args: [--maxkb=4096]
+        args: [--maxkb=10240]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.0
     hooks:
       - id: ruff
         args: [--fix]
+        exclude: '\.ipynb$'
       - id: ruff-format
+        exclude: '\.ipynb$'
 
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
@@ -29,6 +31,7 @@ repos:
     rev: v2.3.0
     hooks:
       - id: codespell
+        exclude: '\.ipynb$'
         args:
           - "--ignore-words=.dict-allowed.txt"
           - "--ignore-regex='base64,.*?=='"

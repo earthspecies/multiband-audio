@@ -48,4 +48,3 @@ requirements-dev.txt
 
 # Misc
 tests/check_equivalence.py
-notebooks

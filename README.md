@@ -1,10 +1,17 @@
 # multiband-audio
 
 [![arXiv](https://img.shields.io/badge/arXiv-2604.27936-b31b1b.svg)](https://arxiv.org/abs/2604.27936)
+[![PyPI](https://img.shields.io/pypi/v/multiband-audio.svg)](https://pypi.org/project/multiband-audio/)
+![CI status](https://github.com/earthspecies/multiband-audio/actions/workflows/publish.yml/badge.svg?branch=main)
+![Pre-commit status](https://github.com/earthspecies/multiband-audio/actions/workflows/pre-commit.yml/badge.svg?branch=main)
+
+A PyTorch-based toolkit for splitting bioacoustic audio samples into frequency bands via heterodyning and fusing per-band embeddings into a single representation.
+
+## Description
 
 Animals hear and vocalize across frequency ranges that differ substantially from humans, often extending into the ultrasonic domain. Yet most computational bioacoustics systems currently rely on standard audio models pre-trained at 16 kHz, corresponding to the human audible range. Typical approaches either resample a given input to the 0-8 kHz baseband and discard this high-frequency content entirely (*baseband*), or slow down the recording to lower the high-frequency information (*time-expansion*), which expands the signal and reduces spectral resolution.
 
-This toolkit provides a _third_ option: **adaptive multi-band encoding**, allowing pre-trained audio models to access the full-spectrum of bioacoustic recordings through heterodyning and learned **fusion** strategy.
+This toolkit provides a _third_ option: **adaptive multi-band encoding**, allowing pre-trained audio models to access the full-spectrum of bioacoustic recordings through heterodyning and learned fusion strategy.
 
 <img src="img/bands.jpg" alt="header" width="1000"/>
 
@@ -200,18 +207,25 @@ bands_bird, _, band_info = transform(waveform_bird, sample_rate=sr_bird)  # 3 ba
 bands_bat,  _, band_info = transform(waveform_bat,  sample_rate=sr_bat)   # 16 bands
 ```
 
+## Notebook
+
+A more detailed walkthrough example is provided in a Jupyter [notebook](notebooks/demo.ipynb) on sample bat, bird, and dog vocalizations.
+
 ## Cite
 
 This repository contains the source code used for the paper *Beyond the Baseband: Adaptive Multi-Band Encoding for Full-Spectrum Bioacoustics Classification* by Sarkar et al. (2026). If you use this toolkit, please cite:
 
-<!-- ```bib
-@INPROCEEDINGS{Sarkar_Baseband_2026,
-         author = {Sarkar, Eklavya},
-          title = {Beyond the Baseband: Adaptive Multi-Band Encoding for Full-Spectrum Bioacoustics Classification},
-      booktitle = {},
-           year = {2026},
+```
+@misc{sarkar2026basebandadaptivemultibandencoding,
+      title={Beyond the Baseband: Adaptive Multi-Band Encoding for Full-Spectrum Bioacoustics Classification},
+      author={Eklavya Sarkar and Marius Miron and David Robinson and Gagan Narula and Milad Alizadeh and Ellen Gilsenan-McMahon and Emmanuel Chemla and Olivier Pietquin and Matthieu Geist},
+      year={2026},
+      eprint={2604.27936},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2604.27936},
 }
-```-->
+```
 
 ## Contact
 
